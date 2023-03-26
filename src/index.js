@@ -13,13 +13,13 @@ inputEl.addEventListener('input', debounce(handleInputSearch, 300));
 function handleInputSearch(event) {
   const countryQuerry = event.target.value.trim();
   if (countryQuerry === '') {
-    listEl.innerHTML = '';
-    countryEL.innerHTML = '';
+    clearMarkup();
     return;
   }
   fetchCountries(countryQuerry)
     .then(countries => {
       if (countries.length >= 10) {
+        clearMarkup();
         Notify.info(
           'Too many matches found. Please enter a more specific name.'
         );
@@ -34,8 +34,7 @@ function handleInputSearch(event) {
       }
     })
     .catch(error => {
-      listEl.innerHTML = '';
-      countryEL.innerHTML = '';
+      clearMarkup();
       console.log(error);
       Notify.failure('Oops, there is no country with that name');
     });
@@ -44,7 +43,7 @@ function handleInputSearch(event) {
 function makeCoutriesListMarkup(coutriesList) {
   return coutriesList
     .map(({ name, flags }) => {
-      return `<li class="country__item"><img src="${flags.svg}" alt="${name.official}" width="60" height="30"></img><p>${name.official}</p></li>`;
+      return `<li class="country__item"><img src="${flags.svg}" alt="${name.official}" width="50"></img><p>${name.official}</p></li>`;
     })
     .join('');
 }
@@ -54,10 +53,15 @@ function makeCoutryCardMarkup(country) {
     .map(({ name, capital, population, flags, languages }) => {
       return `<div class="coutry__header"><img src="${flags.svg}" alt="${
         name.official
-      }" width="60" height="30"></img><h1>${name.official}</h1></div>
+      }" width="60"></img><h1>${name.official}</h1></div>
     <p><b>Capital: </b>${capital}</p>
     <p><b>Population: </b>${population}</p>
     <p><b>Languages: </b>${Object.values(languages).join(', ')}</p>`;
     })
     .join('');
+}
+
+function clearMarkup() {
+  listEl.innerHTML = '';
+  countryEL.innerHTML = '';
 }
