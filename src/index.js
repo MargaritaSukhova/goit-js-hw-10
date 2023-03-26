@@ -34,6 +34,8 @@ function handleInputSearch(event) {
       }
     })
     .catch(error => {
+      listEl.innerHTML = '';
+      countryEL.innerHTML = '';
       console.log(error);
       Notify.failure('Oops, there is no country with that name');
     });
@@ -55,7 +57,7 @@ function makeCoutryCardMarkup(country) {
       }" width="60" height="30"></img><h1>${name.official}</h1></div>
     <p><b>Capital: </b>${capital}</p>
     <p><b>Population: </b>${population}</p>
-    <p><b>Languages: </b>${Object.values(languages)}</p>`;
+    <p><b>Languages: </b>${Object.values(languages).join(', ')}</p>`;
     })
     .join('');
 }
